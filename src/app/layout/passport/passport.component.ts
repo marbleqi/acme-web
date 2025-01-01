@@ -27,7 +27,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   styleUrls: ['./passport.component.less'],
   standalone: true,
-  imports: [RouterOutlet, GlobalFooterModule, NzIconModule, ThemeBtnComponent]
+  imports: [RouterOutlet, GlobalFooterModule, NzIconModule]
 })
 export class LayoutPassportComponent implements OnInit {
   private tokenService = inject(DA_SERVICE_TOKEN);

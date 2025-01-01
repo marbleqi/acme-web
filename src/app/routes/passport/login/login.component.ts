@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { StartupService } from '@core';
 import { ReuseTabService } from '@delon/abc/reuse-tab';
 import { ALLOW_ANONYMOUS, DA_SERVICE_TOKEN, SocialOpenType, SocialService } from '@delon/auth';
-import { I18nPipe, SettingsService, _HttpClient } from '@delon/theme';
+import { SettingsService, _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -27,7 +27,6 @@ import { finalize } from 'rxjs';
   imports: [
     RouterLink,
     ReactiveFormsModule,
-    I18nPipe,
     NzCheckboxModule,
     NzTabsModule,
     NzAlertModule,
@@ -49,8 +48,8 @@ export class UserLoginComponent implements OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
 
   form = inject(FormBuilder).nonNullable.group({
-    userName: ['', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-    password: ['', [Validators.required, Validators.pattern(/^(ng\-alain\.com)$/)]],
+    userName: ['admin', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+    password: ['ng-alain.com', [Validators.required, Validators.pattern(/^(ng\-alain\.com)$/)]],
     mobile: ['', [Validators.required, Validators.pattern(/^1\d{10}$/)]],
     captcha: ['', [Validators.required]],
     remember: [true]
