@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { GlobalFooterModule } from '@delon/abc/global-footer';
 import { DA_SERVICE_TOKEN } from '@delon/auth';
-import { ThemeBtnComponent } from '@delon/theme/theme-btn';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -12,15 +11,15 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <div class="wrap">
         <div class="top">
           <div class="head">
-            <img class="logo" src="./assets/logo-color.svg" />
-            <span class="title">NG-ALAIN</span>
+            <img class="logo" src="./assets/logo.svg" />
+            <span class="title">证书管理平台</span>
           </div>
-          <div class="desc">武林中最有影响力的《葵花宝典》；欲练神功，挥刀自宫</div>
+          <div class="desc">Let's Encrypt证书自动化管理平台</div>
         </div>
         <router-outlet />
         <global-footer [links]="links">
           Copyright
-          <i class="anticon anticon-copyright"></i> 2023 <a href="//github.com/cipchk" target="_blank">卡色</a>出品
+          <i class="anticon anticon-copyright"></i> 2025 <a href="//github.com/marbleqi" target="_blank">闲思暇想</a>出品
         </global-footer>
       </div>
     </div>

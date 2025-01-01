@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
 import { LayoutPassportComponent } from '@layout';
 
-import { CallbackComponent } from './callback.component';
-import { UserLoginComponent } from './login/login.component';
+import { UserLoginComponent, CallbackComponent } from '.';
 
 export const routes: Routes = [
   // passport

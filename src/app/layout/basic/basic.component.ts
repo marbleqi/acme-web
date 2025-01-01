@@ -10,32 +10,16 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
-import { HeaderClearStorageComponent } from './widgets/clear-storage.component';
-import { HeaderFullScreenComponent } from './widgets/fullscreen.component';
-import { HeaderSearchComponent } from './widgets/search.component';
-import { HeaderUserComponent } from './widgets/user.component';
+import { HeaderClearStorageComponent, HeaderFullScreenComponent, HeaderUserComponent } from '..';
 
 @Component({
   selector: 'layout-basic',
   template: `
     <layout-default [options]="options" [asideUser]="asideUserTpl" [content]="contentTpl" [customError]="null">
       <layout-default-header-item direction="left">
-        <a layout-default-header-item-trigger href="//github.com/ng-alain/ng-alain" target="_blank">
+        <a layout-default-header-item-trigger href="//github.com/marbleqi/acme-web" target="_blank">
           <i nz-icon nzType="github"></i>
         </a>
-      </layout-default-header-item>
-      <layout-default-header-item direction="left" hidden="mobile">
-        <a layout-default-header-item-trigger routerLink="/passport/lock">
-          <i nz-icon nzType="lock"></i>
-        </a>
-      </layout-default-header-item>
-      <layout-default-header-item direction="left" hidden="pc">
-        <div layout-default-header-item-trigger (click)="searchToggleStatus = !searchToggleStatus">
-          <i nz-icon nzType="search"></i>
-        </div>
-      </layout-default-header-item>
-      <layout-default-header-item direction="middle">
-        <header-search class="alain-default__search" [toggleChange]="searchToggleStatus" />
       </layout-default-header-item>
       <layout-default-header-item direction="right" hidden="mobile">
         <div layout-default-header-item-trigger nz-dropdown [nzDropdownMenu]="settingsMenu" nzTrigger="click" nzPlacement="bottomRight">
@@ -90,7 +74,6 @@ import { HeaderUserComponent } from './widgets/user.component';
     NzMenuModule,
     NzDropDownModule,
     NzAvatarModule,
-    HeaderSearchComponent,
     HeaderClearStorageComponent,
     HeaderFullScreenComponent,
     HeaderUserComponent
