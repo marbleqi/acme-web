@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
-import { I18nPipe } from '@delon/theme';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -14,7 +13,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
     '[class.flex-1]': 'true'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, I18nPipe]
+  imports: [NzIconModule]
 })
 export class HeaderClearStorageComponent {
   private readonly modalSrv = inject(NzModalService);

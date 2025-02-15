@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { GlobalFooterModule } from '@delon/abc/global-footer';
 import { DA_SERVICE_TOKEN } from '@delon/auth';
-import { ThemeBtnComponent } from '@delon/theme/theme-btn';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -26,7 +25,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     </div>
   `,
   styleUrls: ['./passport.component.less'],
-  imports: [RouterOutlet, GlobalFooterModule, NzIconModule, ThemeBtnComponent]
+  imports: [RouterOutlet, GlobalFooterModule, NzIconModule]
 })
 export class LayoutPassportComponent implements OnInit {
   private tokenService = inject(DA_SERVICE_TOKEN);
