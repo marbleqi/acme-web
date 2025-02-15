@@ -12,6 +12,7 @@ import {
 } from '@angular/router';
 import { defaultInterceptor, provideStartup } from '@core';
 import { provideCellWidgets } from '@delon/abc/cell';
+import { provideReuseTabConfig, ReuseTabMatchMode } from '@delon/abc/reuse-tab';
 import { provideSTWidgets } from '@delon/abc/st';
 import { authSimpleInterceptor, provideAuth } from '@delon/auth';
 import { provideSFConfig } from '@delon/form';
@@ -58,9 +59,8 @@ const providers: Array<Provider | EnvironmentProviders> = [
   provideAuth(),
   provideCellWidgets(...CELL_WIDGETS),
   provideSTWidgets(...ST_WIDGETS),
-  provideSFConfig({
-    widgets: [...SF_WIDGETS]
-  }),
+  provideSFConfig({ widgets: [...SF_WIDGETS] }),
+  provideReuseTabConfig({ mode: ReuseTabMatchMode.URL }),
   provideStartup(),
   ...(environment.providers || [])
 ];
