@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
+import { LayoutPassportComponent } from '@layout';
 
-import { CallbackComponent } from './callback.component';
-import { UserLockComponent } from './lock/lock.component';
-import { UserLoginComponent } from './login/login.component';
-import { UserRegisterComponent } from './register/register.component';
-import { UserRegisterResultComponent } from './register-result/register-result.component';
-import { LayoutPassportComponent } from '../../layout';
+import { CallbackComponent, UserLockComponent, UserLoginComponent, UserRegisterComponent, UserRegisterResultComponent } from '.';
 
 export const routes: Routes = [
   // passport
@@ -14,11 +10,10 @@ export const routes: Routes = [
     component: LayoutPassportComponent,
     children: [
       { path: 'login', component: UserLoginComponent, data: { title: '登录' } },
+      { path: 'callback/:type', component: CallbackComponent },
       { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
       { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果' } },
       { path: 'lock', component: UserLockComponent, data: { title: '锁屏' } }
     ]
-  },
-  // 单页不包裹Layout
-  { path: 'passport/callback/:type', component: CallbackComponent }
+  }
 ];
