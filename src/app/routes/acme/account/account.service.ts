@@ -1,7 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
+import { ListService } from '@shared';
 
 @Injectable()
-export class AcmeAccountService {
-  private readonly http = inject(_HttpClient);
+export class AcmeAccountService extends ListService {
+  /**
+   * 构造函数
+   */
+  constructor() {
+    super('account');
+  }
 }

@@ -1,52 +1,51 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { STColumn, STComponent } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ModalHelper, _HttpClient } from '@delon/theme';
-import { SHARED_IMPORTS } from '@shared';
+import { SHARED_IMPORTS, ListComponent } from '@shared';
 
-import { AcmeAccountService } from './account.service';
+import { AcmeAccountService, AcmeAccountEditComponent } from '..';
 
 @Component({
   selector: 'app-acme-account',
-  imports: [...SHARED_IMPORTS],
   templateUrl: './account.component.html',
-  providers: [AcmeAccountService]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [...SHARED_IMPORTS]
 })
-export class AcmeAccountComponent implements OnInit {
-  private readonly http = inject(_HttpClient);
+export class AcmeAccountComponent extends ListComponent {
   private readonly modal = inject(ModalHelper);
 
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
+  constructor(private readonly accountSrv: AcmeAccountService) {
+    super(accountSrv);
+    this.columns = [
+      { title: '编号', index: 'id' },
+      { title: '电子邮箱', index: 'config.email' },
+      { title: '备注说明', index: 'config.description' },
+      { title: '测试环境', index: 'config.staging', type: 'yn' },
+      { title: '启用状态', index: 'config.status', type: 'yn' },
+      { title: '创建时间', index: 'create.at', type: 'date', dateFormat: 'yyyy-MM-dd HH:mm:ss.SSS' },
+      { title: '更新时间', index: 'update.at', type: 'date', dateFormat: 'yyyy-MM-dd HH:mm:ss.SSS' },
+      {
+        title: '操作',
+        buttons: [
+          {
+            text: '编辑',
+            icon: 'edit',
+            type: 'static',
+            modal: { component: AcmeAccountEditComponent, params: (record: any) => ({ type: 'edit', pk: record.id }) },
+            click: () => this.reload()
+          },
+          {
+            text: '克隆',
+            icon: 'copy',
+            type: 'static',
+            modal: { component: AcmeAccountEditComponent, params: (record: any) => ({ type: 'copy', pk: record.id }) },
+            click: () => this.reload()
+          }
+        ]
       }
-    }
-  };
-  @ViewChild('st') private readonly st!: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
-    }
-  ];
-
-  ngOnInit(): void {
-    console.debug('');
+    ];
   }
 
   add(): void {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+    this.modal.createStatic(AcmeAccountEditComponent, { type: 'add' }).subscribe(() => this.reload());
   }
 }

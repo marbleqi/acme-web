@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
 
-import { AcmeAccountComponent, AcmeCertComponent } from '.';
+import { AcmeAccountService, AcmeAccountComponent, AcmeCertComponent } from '.';
 
 export const routes: Routes = [
-  { path: 'account', component: AcmeAccountComponent },
-  { path: 'cert', component: AcmeCertComponent }
+  {
+    path: '',
+    pathMatch: 'prefix',
+    providers: [AcmeAccountService],
+    children: [
+      { path: 'account', component: AcmeAccountComponent },
+      { path: 'cert', component: AcmeCertComponent }
+    ]
+  }
 ];

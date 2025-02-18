@@ -1,61 +1,51 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { SFSchema, SFUISchema } from '@delon/form';
 import { _HttpClient } from '@delon/theme';
-import { SHARED_IMPORTS } from '@shared';
+import { SHARED_IMPORTS, EditComponent } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
+import { AcmeAccountService } from '../..';
+
 @Component({
   selector: 'app-acme-account-edit',
+  templateUrl: './edit.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...SHARED_IMPORTS],
-  templateUrl: './edit.component.html'
+  providers: [AcmeAccountService]
 })
-export class AcmeAccountEditComponent implements OnInit {
-  readonly http = inject(_HttpClient);
-  private readonly msgSrv = inject(NzMessageService);
-  private readonly modal = inject(NzModalRef);
-
-  record: any = {};
-  i: any;
+export class AcmeAccountEditComponent extends EditComponent {
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 }
-    },
-    required: ['owner', 'callNo', 'href', 'description']
-  };
-  ui: SFUISchema = {
-    '*': {
-      spanLabelFixed: 100,
-      grid: { span: 12 }
-    },
-    $no: {
-      widget: 'text'
-    },
-    $href: {
-      widget: 'string'
-    },
-    $description: {
-      widget: 'textarea',
-      grid: { span: 24 }
+      id: { type: 'integer', title: '编号' },
+      config: {
+        type: 'object',
+        properties: {
+          email: { type: 'string', title: '电子邮箱' },
+          description: { type: 'string', title: '备注说明' },
+          staging: { type: 'boolean', title: '测试环境', default: true },
+          status: { type: 'boolean', title: '启用状态', default: true }
+        },
+        required: ['email', 'description', 'staging', 'status']
+      },
+      create: { type: 'object', properties: { at: { type: 'integer', title: '创建时间' } } },
+      update: { type: 'object', properties: { at: { type: 'integer', title: '更新时间' } } }
     }
   };
+  ui: SFUISchema = {
+    '*': { spanLabelFixed: 100, grid: { span: 24 } },
+    $id: { widget: 'text' },
+    $create: { $at: { widget: 'at' } },
+    $update: { $at: { widget: 'at' } }
+  };
 
-  ngOnInit(): void {
-    if (this.record.id > 0) this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+  constructor(private readonly accountSrv: AcmeAccountService) {
+    super(accountSrv);
+    this.name = '证书账户';
+    this.i = { id: 0, config: { email: '', description: '', staging: true, status: true }, create: { at: 0 }, update: { at: 0 } };
   }
 
-  save(value: any): void {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
-  }
-
-  close(): void {
-    this.modal.destroy();
+  override save(value: any): void {
+    super.save(value.config);
   }
 }
