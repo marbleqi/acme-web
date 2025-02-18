@@ -14,10 +14,6 @@ export class CallbackComponent implements OnInit {
   @Input() type = '';
 
   ngOnInit(): void {
-    this.mockModel();
-  }
-
-  private mockModel(): void {
     const info = {
       token: '123456789',
       name: 'cipchk',

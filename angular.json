@@ -70,8 +70,7 @@
               "ajv",
               "ajv-formats",
               "extend",
-              "file-saver",
-              "mockjs"
+              "file-saver"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

@@ -104,48 +104,68 @@ export class UserLoginComponent implements OnDestroy {
 
     // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
     // 然一般来说登录请求不需要校验，因此加上 `ALLOW_ANONYMOUS` 表示不触发用户 Token 校验
-    this.loading = true;
-    this.cdr.detectChanges();
-    this.http
-      .post(
-        '/login/account',
-        {
-          type: this.type,
-          userName: this.form.value.userName,
-          password: this.form.value.password
-        },
-        null,
-        {
-          context: new HttpContext().set(ALLOW_ANONYMOUS, true)
-        }
-      )
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe(res => {
-        if (res.msg !== 'ok') {
-          this.error = res.msg;
-          this.cdr.detectChanges();
-          return;
-        }
-        // 清空路由复用信息
-        this.reuseTabService?.clear();
-        // 设置用户Token信息
-        // TODO: Mock expired value
-        res.user.expired = +new Date() + 1000 * 60 * 5;
-        this.tokenService.set(res.user);
-        // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-        this.startupSrv.load().subscribe(() => {
-          let url = this.tokenService.referrer!.url || '/';
-          if (url.includes('/passport')) {
-            url = '/';
-          }
-          this.router.navigateByUrl(url);
-        });
-      });
+    // this.loading = true;
+    // this.cdr.detectChanges();
+    // this.http
+    //   .post(
+    //     '/login/account',
+    //     {
+    //       type: this.type,
+    //       userName: this.form.value.userName,
+    //       password: this.form.value.password
+    //     },
+    //     null,
+    //     {
+    //       context: new HttpContext().set(ALLOW_ANONYMOUS, true)
+    //     }
+    //   )
+    //   .pipe(
+    //     finalize(() => {
+    //       this.loading = false;
+    //       this.cdr.detectChanges();
+    //     })
+    //   )
+    //   .subscribe(res => {
+    //     if (res.msg !== 'ok') {
+    //       this.error = res.msg;
+    //       this.cdr.detectChanges();
+    //       return;
+    //     }
+    //     // 清空路由复用信息
+    //     this.reuseTabService?.clear();
+    //     // 设置用户Token信息
+    //     // TODO: Mock expired value
+    //     res.user.expired = +new Date() + 1000 * 60 * 5;
+    //     this.tokenService.set(res.user);
+    //     // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
+    //     this.startupSrv.load().subscribe(() => {
+    //       let url = this.tokenService.referrer!.url || '/';
+    //       if (url.includes('/passport')) {
+    //         url = '/';
+    //       }
+    //       this.router.navigateByUrl(url);
+    //     });
+    //   });
+
+    // 清空路由复用信息
+    this.reuseTabService?.clear();
+    // 设置用户Token信息
+    const user: any = {
+      name: 'Admin',
+      avatar: './assets/tmp/img/avatar.jpg',
+      email: 'cipchk@qq.com',
+      token: '123456789',
+      expired: +new Date() + 1000 * 60 * 5
+    };
+    this.tokenService.set(user);
+    // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
+    this.startupSrv.load().subscribe(() => {
+      let url = this.tokenService.referrer!.url || '/';
+      if (url.includes('/passport')) {
+        url = '/';
+      }
+      this.router.navigateByUrl(url);
+    });
   }
 
   open(type: string, openType: SocialOpenType = 'href'): void {

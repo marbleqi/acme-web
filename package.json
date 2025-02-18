@@ -39,7 +39,6 @@
     "@delon/auth": "^19.0.1",
     "@delon/cache": "^19.0.1",
     "@delon/form": "^19.0.1",
-    "@delon/mock": "^19.0.1",
     "@delon/theme": "^19.0.1",
     "@delon/util": "^19.0.1",
     "@delon/chart": "^19.0.1",
