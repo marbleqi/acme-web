@@ -1,8 +1,8 @@
 import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpResponseBase } from '@angular/common/http';
 import { Injector, inject } from '@angular/core';
-import { IGNORE_BASE_URL, _HttpClient } from '@delon/theme';
+import { IGNORE_BASE_URL, _HttpClient, SettingsService } from '@delon/theme';
 import { environment } from '@env/environment';
-import { Observable, of, throwError, mergeMap } from 'rxjs';
+import { Observable, of, throwError, mergeMap, catchError } from 'rxjs';
 
 import { ReThrowHttpError, checkStatus, getAdditionalHeaders, toLogin } from './helper';
 import { tryRefreshToken } from './refresh-token';
@@ -62,14 +62,21 @@ function handleData(injector: Injector, ev: HttpResponseBase, req: HttpRequest<a
 }
 
 export const defaultInterceptor: HttpInterceptorFn = (req, next) => {
+  /**注入器 */
+  const injector = inject(Injector);
   // 统一加上服务端前缀
   let url = req.url;
-  if (!req.context.get(IGNORE_BASE_URL) && !url.startsWith('https://') && !url.startsWith('http://')) {
-    const { baseUrl } = environment.api;
+  if (
+    !req.context.get(IGNORE_BASE_URL) &&
+    !url.startsWith('https://') &&
+    !url.startsWith('http://') &&
+    !url.startsWith('//') &&
+    !url.startsWith('assets')
+  ) {
+    const baseUrl = injector.get(SettingsService).getData('baseUrl');
     url = baseUrl + (baseUrl.endsWith('/') && url.startsWith('/') ? url.substring(1) : url);
   }
   const newReq = req.clone({ url, setHeaders: getAdditionalHeaders(req.headers) });
-  const injector = inject(Injector);
 
   return next(newReq).pipe(
     mergeMap(ev => {
@@ -79,7 +86,7 @@ export const defaultInterceptor: HttpInterceptorFn = (req, next) => {
       }
       // 若一切都正常，则后续操作
       return of(ev);
-    })
-    // catchError((err: HttpErrorResponse) => handleData(injector, err, newReq, next))
+    }),
+    catchError((err: HttpErrorResponse) => handleData(injector, err, newReq, next))
   );
 };
