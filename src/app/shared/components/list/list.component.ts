@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { STComponent, STColumn, STChange, STData } from '@delon/abc/st';
+import { ModalHelper } from '@delon/theme';
 import { ListService, BaseComponent } from '@shared';
 
 /**通用列表组件 */
 @Component({ selector: 'app-list', template: '' })
 export class ListComponent extends BaseComponent implements OnInit {
+  protected readonly modal = inject(ModalHelper);
   @ViewChild('st') protected readonly st!: STComponent;
 
   columns: STColumn[] = [];

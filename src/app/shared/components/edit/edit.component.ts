@@ -31,7 +31,7 @@ export class EditComponent extends BaseComponent implements OnInit {
     console.debug('type', this.type, 'pk', this.pk);
     if (this.type === 'add') {
       this.title = `新建${this.name}`;
-      this.buttonName = '提交';
+      this.buttonName = '创建';
       this.loading = false;
       console.debug('i', this.i);
       this.cdr.detectChanges();
@@ -41,7 +41,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         this.buttonName = '保存';
       } else {
         this.title = `克隆${this.name}`;
-        this.buttonName = '提交';
+        this.buttonName = '创建';
       }
       this.listSrv.show(this.pk).subscribe(res => {
         console.debug(`${this.name}数据`, res);

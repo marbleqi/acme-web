@@ -25,7 +25,7 @@ export class ListService extends BaseService {
           }
           this.operateId = Math.max(...res.map(item => item.update.operateId));
         }
-        return Array.from(this.dataMap.values()).sort((a, b) => a.id - b.id);
+        return Array.from(this.dataMap.values());
       })
     );
   }

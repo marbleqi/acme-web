@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { ListService } from '@shared';
 
 @Injectable()
-export class AcmeAccountService extends ListService {
+export class AcmeKeyService extends ListService {
   /**
    * 构造函数
    */
   constructor() {
-    super('account');
+    super('key');
   }
 }

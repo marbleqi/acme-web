@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { ModalHelper, _HttpClient } from '@delon/theme';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SHARED_IMPORTS, ListComponent } from '@shared';
 
 import { AcmeAccountService, AcmeAccountEditComponent } from '..';
@@ -11,8 +10,6 @@ import { AcmeAccountService, AcmeAccountEditComponent } from '..';
   imports: [...SHARED_IMPORTS]
 })
 export class AcmeAccountComponent extends ListComponent {
-  private readonly modal = inject(ModalHelper);
-
   constructor(private readonly accountSrv: AcmeAccountService) {
     super(accountSrv);
     this.columns = [

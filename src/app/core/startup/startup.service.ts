@@ -69,6 +69,7 @@ export class StartupService {
             children: [
               { text: 'Dashboard', link: '/dashboard', icon: { type: 'icon', value: 'appstore' } },
               { text: '账户', link: '/acme/account', icon: { type: 'icon', value: 'appstore' } },
+              { text: '云密钥', link: '/acme/key', icon: { type: 'icon', value: 'appstore' } },
               { text: '证书', link: '/acme/cert', icon: { type: 'icon', value: 'appstore' } }
             ]
           }
