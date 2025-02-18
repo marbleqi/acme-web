@@ -14,7 +14,8 @@ export const routes: Routes = [
     data: {},
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent }
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'acme', loadChildren: () => import('./acme/routes').then(m => m.routes) }
     ]
   },
   // passport
