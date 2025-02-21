@@ -27,10 +27,10 @@ export class ListComponent extends BaseComponent implements OnInit {
   }
 
   reload() {
+    this.loading.set(true);
     this.listSrv.index().subscribe(res => {
       this.data = res;
-      this.loading = false;
-      this.cdr.detectChanges();
+      this.loading.set(false);
     });
   }
 

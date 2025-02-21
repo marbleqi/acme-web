@@ -1,7 +1,12 @@
-import { Injectable, inject } from '@angular/core';
-import { _HttpClient } from '@delon/theme';
+import { Injectable } from '@angular/core';
+import { ListService } from '@shared';
 
 @Injectable()
-export class AcmeCertService {
-  private readonly http = inject(_HttpClient);
+export class AcmeCertService extends ListService {
+  /**
+   * 构造函数
+   */
+  constructor() {
+    super('cert');
+  }
 }

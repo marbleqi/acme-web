@@ -40,7 +40,7 @@ export class AcmeAccountEditComponent extends EditComponent {
   constructor(private readonly accountSrv: AcmeAccountService) {
     super(accountSrv);
     this.name = '证书账户';
-    this.i = { id: 0, config: { email: '', description: '', staging: true, status: true }, create: { at: 0 }, update: { at: 0 } };
+    this.i.set({ id: 0, create: { at: 0 }, update: { at: 0 } });
   }
 
   override save(value: any): void {

@@ -1,52 +1,48 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { STColumn, STComponent } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
-import { ModalHelper, _HttpClient } from '@delon/theme';
-import { SHARED_IMPORTS } from '@shared';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { SHARED_IMPORTS, ListComponent } from '@shared';
 
-import { AcmeCertService } from './cert.service';
+import { AcmeCertService, AcmeCertEditComponent } from '..';
 
 @Component({
   selector: 'app-acme-cert',
-  imports: [...SHARED_IMPORTS],
   templateUrl: './cert.component.html',
-  providers: [AcmeCertService]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [...SHARED_IMPORTS]
 })
-export class AcmeCertComponent implements OnInit {
-  private readonly http = inject(_HttpClient);
-  private readonly modal = inject(ModalHelper);
-
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
+export class AcmeCertComponent extends ListComponent {
+  constructor(private readonly certSrv: AcmeCertService) {
+    super(certSrv);
+    this.columns = [
+      { title: '编号', index: 'id' },
+      { title: '所属账户', index: 'config.accountId' },
+      { title: '域名', index: 'config.domain' },
+      { title: '云服务商', index: 'config.dns' },
+      { title: '启用状态', index: 'config.status', type: 'yn' },
+      { title: '创建时间', index: 'create.at', type: 'date', dateFormat: 'yyyy-MM-dd HH:mm:ss.SSS' },
+      { title: '更新时间', index: 'update.at', type: 'date', dateFormat: 'yyyy-MM-dd HH:mm:ss.SSS' },
+      {
+        title: '操作',
+        buttons: [
+          {
+            text: '编辑',
+            icon: 'edit',
+            type: 'static',
+            modal: { component: AcmeCertEditComponent, params: (record: any) => ({ type: 'edit', pk: record.id }) },
+            click: () => this.reload()
+          },
+          {
+            text: '克隆',
+            icon: 'copy',
+            type: 'static',
+            modal: { component: AcmeCertEditComponent, params: (record: any) => ({ type: 'copy', pk: record.id }) },
+            click: () => this.reload()
+          }
+        ]
       }
-    }
-  };
-  @ViewChild('st') private readonly st!: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
-    }
-  ];
-
-  ngOnInit(): void {
-    console.debug('');
+    ];
   }
 
   add(): void {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+    this.modal.createStatic(AcmeCertEditComponent, { type: 'add' }).subscribe(() => this.reload());
   }
 }

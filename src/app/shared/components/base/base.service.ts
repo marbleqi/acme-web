@@ -9,7 +9,6 @@ export class BaseService {
   protected http = inject(_HttpClient);
   /**项目配置服务 */
   protected settingSrv = inject(SettingsService);
-
   /**
    * 构造函数
    * @param baseUrl 基本路径

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { SFComponent, SFUISchema } from '@delon/form';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { SFComponent } from '@delon/form';
 import { BaseComponent, ListService } from '@shared';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
@@ -20,7 +20,8 @@ export class EditComponent extends BaseComponent implements OnInit {
   /**表单 */
   @ViewChild('sf') readonly sf!: SFComponent;
   /**表单初始数据 */
-  i: any;
+  i = signal<any>({});
+
   private readonly modal = inject(NzModalRef);
 
   constructor(private readonly listSrv: ListService) {
@@ -32,9 +33,7 @@ export class EditComponent extends BaseComponent implements OnInit {
     if (this.type === 'add') {
       this.title = `新建${this.name}`;
       this.buttonName = '创建';
-      this.loading = false;
-      console.debug('i', this.i);
-      this.cdr.detectChanges();
+      this.loading.set(false);
     } else {
       if (this.type === 'edit') {
         this.title = `修改${this.name}`;
@@ -45,9 +44,8 @@ export class EditComponent extends BaseComponent implements OnInit {
       }
       this.listSrv.show(this.pk).subscribe(res => {
         console.debug(`${this.name}数据`, res);
-        this.i = res;
-        this.loading = false;
-        this.cdr.detectChanges();
+        this.i.set(res);
+        this.loading.set(false);
       });
     }
   }
@@ -56,7 +54,7 @@ export class EditComponent extends BaseComponent implements OnInit {
    * 提交，可重写
    */
   save(value: any): void {
-    this.loading = true;
+    this.loading.set(true);
     console.debug(`提交${this.name}数据`, value);
     if (this.type === 'edit') {
       this.listSrv.update(this.pk, value).subscribe({
@@ -67,6 +65,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.message.error(err.error.message);
+          this.loading.set(false);
         }
       });
     } else {
@@ -78,6 +77,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.message.error(err.error.message);
+          this.loading.set(false);
         }
       });
     }
